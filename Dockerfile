@@ -1,7 +1,20 @@
-FROM nginx:alpine
+# Menggunakan image resmi Node.js sebagai base image
+FROM node:14
 
-COPY index.html /usr/share/nginx/html/
+# Menentukan direktori kerja di dalam container
+WORKDIR /app
 
-EXPOSE 80
+# Menyalin package.json dan package-lock.json ke dalam container
+COPY package*.json ./
 
-CMD ["nginx", "-g", "daemon off;"]
+# Menginstall dependensi aplikasi
+RUN npm install
+
+# Menyalin seluruh konten aplikasi ke dalam container
+COPY . .
+
+# Menentukan port yang akan diexpose
+EXPOSE 3000
+
+# Perintah yang akan dijalankan saat container dijalankan
+CMD ["npm", "start"]
